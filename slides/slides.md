@@ -1,9 +1,6 @@
 ---
 theme: default
 title: Prompt Engineering 101
-# Hash routing: required for GitHub Pages project sites. Avoids deep-link 404s
-# and base-path doubling that history mode hits under a /<repo>/ subpath.
-routerMode: hash
 info: |
   ## Prompt Engineering 101
   A 60-minute hands-on workshop on getting great work out of AI — on purpose.
