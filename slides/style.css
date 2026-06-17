@@ -248,6 +248,84 @@
   margin: 1.1rem 0 0.45rem;
 }
 
+/* --- Course plug slide ---------------------------------------------------------- */
+
+.course-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.4rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.course-banner img {
+  height: 18rem;
+  width: auto;
+  max-width: 16rem;
+  object-fit: contain;
+  border-radius: 0.6rem;
+  box-shadow: 0 10px 28px oklch(0% 0 0 / 0.18);
+  rotate: -1deg;
+}
+
+.course-info p {
+  font-size: 1.02rem;
+  line-height: 1.6;
+}
+
+.course-info b {
+  color: var(--color-accent);
+}
+
+.course-chapters {
+  list-style: none !important;
+  counter-reset: ch;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.course-chapters li {
+  counter-increment: ch;
+  position: relative;
+  padding-left: 2rem;
+  font-size: 1.05rem;
+  line-height: 1.95;
+}
+
+.course-chapters li::before {
+  content: counter(ch);
+  position: absolute;
+  left: 0;
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.course-here {
+  font-weight: 700;
+}
+
+.course-here span {
+  margin-left: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-paper);
+  background: var(--color-accent);
+  padding: 0.12rem 0.5rem;
+  border-radius: 0.3rem;
+  vertical-align: middle;
+}
+
+.course-cta {
+  margin-top: 1.2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
 .closing-slide .resources {
   position: absolute;
   bottom: 2rem;

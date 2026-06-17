@@ -25,9 +25,9 @@ class: cover-slide
 
 <p class="subtitle">Getting great work out of AI, on purpose.</p>
 
-<p class="byline">A 60-minute hands-on workshop</p>
+<p class="byline">A 60-minute live workshop</p>
 
-<p class="presenter">Dharma J. (2026)</p>
+<p class="presenter">Dharmarajsinh Jethva (2026)</p>
 
 ---
 layout: default
@@ -50,6 +50,31 @@ class: about-slide
     <li>Light novels · manga · anime · Souls games</li>
     <li>I use Neovim (btw)</li>
   </ul>
+</div>
+</div>
+
+---
+layout: default
+class: course-slide
+---
+
+# Based on a course I wrote
+
+<div class="course-grid">
+<div class="course-banner">
+<img :src="$base + 'gen-ai-course.gif'" alt="Codédex Generative AI course launch" />
+</div>
+<div class="course-info">
+<p>GenAI course will cover 4 topics and today we'll be discussing on of those.</p>
+<ol class="course-chapters">
+<li>How AI Thinks</li>
+<li class="course-here">Prompt Engineering <span>today</span></li>
+<li>TBA</li>
+<li>TBA</li>
+<!-- <li>Embeddings</li> -->
+<!-- <li>Limitations &amp; Safety</li> -->
+</ol>
+<p class="course-cta">Learn at <b>codedex.io/gen-ai</b></p>
 </div>
 </div>
 
