@@ -28,7 +28,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
           cache-dependency-path: slides/pnpm-lock.yaml
 
@@ -46,6 +46,10 @@ jobs:
         working-directory: slides
 
       - uses: actions/configure-pages@v5
+        with:
+          # Turn Pages on automatically on the first run, so no manual
+          # Settings → Pages → Source change is needed.
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
