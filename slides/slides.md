@@ -57,14 +57,14 @@ class: about-slide
 class: hook-slide
 ---
 
-# Treat it like ordering your coffee!
+# Why does the same AI give such different answers?
 
 <div class="compare">
 <div class="prompt-card prompt-bad">
-give me coffee
+Explain emojis
 </div>
 <div class="prompt-card prompt-good" v-click>
-I want a <b>medium oat-milk latte</b>, <b>extra shot</b>, <b>half the syrup</b>, <b>extra hot</b>. <b>For here</b>, not to go. Suggest good coffee shops.
+Explain emojis to <b>an ancient Egyptian scribe</b> who already loves hieroglyphs. <b>One analogy</b>. Max <b>100 words</b>.
 </div>
 </div>
 
