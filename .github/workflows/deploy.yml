@@ -1,0 +1,62 @@
+name: Deploy slides to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Least-privilege permissions the GitHub Pages deploy needs.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one Pages deploy at a time; let a newer push supersede an in-flight one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: slides/pnpm-lock.yaml
+
+      # --prod skips the playwright-chromium devDependency (only used for PDF
+      # export), so the build job stays fast.
+      - name: Install dependencies
+        run: pnpm install --prod --no-frozen-lockfile
+        working-directory: slides
+
+      # A project repo is served from https://<user>.github.io/<repo>/, so the
+      # Vite base must match the repo name. Asset URLs resolve through the
+      # `$base` global defined in slides/setup/main.ts.
+      - name: Build slides
+        run: pnpm build --base "/${{ github.event.repository.name }}/" --out dist
+        working-directory: slides
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: slides/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,740 @@
+/* ---------------------------------------------------------------------------
+   Prompt Engineering 101 — printed field-journal editorial
+   Paper-cream pages with grain, ink type, burnt-amber accent. Fraunces serif
+   display against Public Sans body; prompts styled as chat artifacts pinned
+   into the page. Section dividers invert to deep ink.
+
+   Sizing note: Slidev renders on a fixed 980px canvas and scales with
+   transform, so all type uses fixed rem values (viewport units would
+   double-scale).
+--------------------------------------------------------------------------- */
+
+:root {
+  --color-paper: oklch(97.5% 0.013 85);
+  --color-paper-deep: oklch(94% 0.022 85);
+  --color-ink: oklch(24% 0.02 60);
+  --color-ink-deep: oklch(19% 0.022 60);
+  --color-ink-soft: oklch(42% 0.02 60);
+  --color-paper-soft: oklch(78% 0.02 85);
+  --color-accent: oklch(58% 0.15 50);
+  --color-accent-soft: oklch(90% 0.05 50);
+  --color-bad: oklch(52% 0.13 25);
+  --color-bad-bg: oklch(95% 0.025 25);
+  --color-good: oklch(48% 0.1 150);
+  --color-good-bg: oklch(95% 0.03 150);
+
+  --text-hero: 3.9rem;
+  --text-h1: 2.3rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-ink);
+}
+
+/* --- Page base -------------------------------------------------------------- */
+
+.slidev-layout {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: 'Public Sans', sans-serif;
+  box-shadow: inset 0 0 110px oklch(0% 0 0 / 0.045);
+}
+
+/* keep slide content above the ghost numerals (zero specificity on purpose,
+   so the absolute-positioned rules below still win) */
+.slidev-layout > :where(:not(.ghost-num, .section-num)) {
+  position: relative;
+  z-index: 1;
+}
+
+/* paper grain */
+.slidev-layout::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.05'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.slidev-layout h1,
+.slidev-layout h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+
+.slidev-layout h1 {
+  font-size: var(--text-h1);
+  line-height: 1.12;
+  margin-bottom: 1.1rem;
+}
+
+/* short amber rule under content-slide headings */
+.slidev-layout:not(.cover-slide, .section, .punchline-slide) h1::after {
+  content: '';
+  display: block;
+  width: 2.4rem;
+  height: 3px;
+  margin-top: 0.5rem;
+  background: var(--color-accent);
+}
+
+.accent {
+  color: var(--color-accent);
+}
+
+.dim {
+  color: var(--color-ink-soft);
+  font-weight: 400;
+  font-size: 0.85em;
+}
+
+.footnote {
+  position: absolute;
+  bottom: 2rem;
+  left: 3.5rem;
+  right: 3.5rem;
+  font-size: 0.82rem;
+  color: var(--color-ink-soft);
+}
+
+/* --- Running head (global-bottom.vue) ---------------------------------------- */
+
+.running-head {
+  position: absolute;
+  top: 1.05rem;
+  right: 1.6rem;
+  z-index: 45;
+  display: flex;
+  gap: 0.9rem;
+  font-family: 'Public Sans', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: oklch(60% 0.025 60);
+}
+
+.running-head-page {
+  color: var(--color-accent);
+}
+
+/* --- Cover & closing ----------------------------------------------------------- */
+
+.cover-slide {
+  background:
+    radial-gradient(ellipse 70% 55% at 82% 18%, var(--color-accent-soft) 0%, transparent 65%),
+    var(--color-paper);
+}
+
+.cover-slide h1 {
+  font-size: var(--text-hero);
+  line-height: 1.05;
+}
+
+.cover-slide .subtitle {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--color-ink-soft);
+  margin-top: 0.4rem;
+}
+
+.cover-slide .byline {
+  margin-top: 2.2rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* "presented by · Codédex" lockup on the cover */
+.presented-by {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.presented-by-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-ink-soft);
+}
+
+.presented-by-coin {
+  height: 1rem;
+  width: auto;
+  margin-top: -0.3rem;
+}
+
+.presented-by-logo {
+  height: 1.2rem;
+  width: auto;
+}
+
+.presenter {
+  margin-top: 1.3rem;
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+}
+
+/* --- About me ----------------------------------------------------------------- */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.6rem;
+  align-items: center;
+  margin-top: 1.4rem;
+}
+
+.about-photo {
+  width: 13.5rem;
+  aspect-ratio: 3 / 4;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 5px solid var(--color-paper);
+  box-shadow: 0 10px 28px oklch(0% 0 0 / 0.18);
+  rotate: -1.4deg;
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-bio ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-bio li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 1.1rem;
+  line-height: 1.75;
+}
+
+.about-bio li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.about-bio strong {
+  color: var(--color-ink);
+}
+
+.about-label {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-accent);
+  margin: 1.1rem 0 0.45rem;
+}
+
+.closing-slide .resources {
+  position: absolute;
+  bottom: 2rem;
+  font-size: 0.82rem;
+  color: var(--color-ink-soft);
+}
+
+/* --- Section dividers: inverted ink pages ----------------------------------------- */
+
+.slidev-layout.section {
+  background:
+    radial-gradient(ellipse 60% 70% at 15% 85%, oklch(28% 0.04 50 / 0.55) 0%, transparent 65%),
+    var(--color-ink-deep);
+  color: var(--color-paper);
+}
+
+.slidev-layout.section h1 {
+  color: var(--color-paper);
+  font-size: 2.9rem;
+  max-width: 26rem;
+}
+
+.part-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.section-sub {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--color-paper-soft);
+  margin-top: 0.5rem;
+}
+
+/* huge numeral bleeding off the divider page */
+.section-num {
+  position: absolute;
+  right: -2.2rem;
+  bottom: -6.5rem;
+  z-index: 0;
+  font-family: 'Fraunces', serif;
+  font-size: 21rem;
+  font-weight: 700;
+  line-height: 1;
+  color: oklch(58% 0.15 50 / 0.26);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* faint numeral behind technique slides */
+.ghost-num {
+  position: absolute;
+  right: 0.4rem;
+  top: -3.2rem;
+  z-index: 0;
+  font-family: 'Fraunces', serif;
+  font-size: 17rem;
+  font-weight: 700;
+  line-height: 1;
+  color: oklch(58% 0.15 50 / 0.08);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* --- Prompt cards as chat artifacts -------------------------------------------------- */
+
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 1rem;
+  align-items: start;
+  margin-top: 1.5rem;
+}
+
+.prompt-card {
+  position: relative;
+  border-radius: 0.75rem;
+  padding: 1.75rem 1.25rem 1.15rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.83rem;
+  line-height: 1.55;
+  box-shadow:
+    0 1px 2px oklch(0% 0 0 / 0.05),
+    0 6px 18px oklch(0% 0 0 / 0.07);
+}
+
+/* sender stamp */
+.prompt-card::before {
+  position: absolute;
+  top: 0.55rem;
+  left: 1.25rem;
+  font-family: 'Public Sans', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+/* chat-bubble tail */
+.prompt-card::after {
+  content: '';
+  position: absolute;
+  bottom: -0.42rem;
+  left: 1.7rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  background: inherit;
+  transform: rotate(45deg);
+  border-radius: 0 0 0.15rem 0;
+}
+
+.prompt-bad {
+  background: var(--color-bad-bg);
+  border: 1px solid oklch(82% 0.05 25);
+  border-left: 3px solid var(--color-bad);
+  color: var(--color-ink);
+  rotate: -0.6deg;
+}
+
+.prompt-bad::before {
+  content: '✗ BEFORE';
+  color: var(--color-bad);
+}
+
+.prompt-bad::after {
+  border-right: 1px solid oklch(82% 0.05 25);
+  border-bottom: 1px solid oklch(82% 0.05 25);
+}
+
+.prompt-good {
+  background: var(--color-good-bg);
+  border: 1px solid oklch(82% 0.05 150);
+  border-left: 3px solid var(--color-accent);
+  color: var(--color-ink);
+  rotate: 0.5deg;
+  margin-top: 0.7rem;
+  margin-left: -0.4rem;
+}
+
+.prompt-good::before {
+  content: '✓ AFTER';
+  color: var(--color-good);
+}
+
+.prompt-good::after {
+  border-right: 1px solid oklch(82% 0.05 150);
+  border-bottom: 1px solid oklch(82% 0.05 150);
+}
+
+.prompt-solo {
+  max-width: 24rem;
+  font-size: 1rem;
+}
+
+.prompt-card b {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.example-line {
+  display: block;
+  margin-top: 0.5rem;
+  padding-left: 0.8rem;
+  border-left: 2px solid var(--color-good);
+  font-style: italic;
+}
+
+/* technique takeaway line with underline sweep */
+.technique-rule {
+  position: absolute;
+  bottom: 2rem;
+  left: 3.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.technique-rule::after {
+  content: '';
+  display: block;
+  height: 2px;
+  margin-top: 0.25rem;
+  background: var(--color-accent-soft);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 650ms var(--ease-out-expo) 180ms;
+}
+
+.slidev-vclick-target.technique-rule:not(.slidev-vclick-hidden)::after {
+  transform: scaleX(1);
+}
+
+/* --- Mental-model visuals --------------------------------------------------------------- */
+
+.completion-demo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1.2rem 0 1.6rem;
+}
+
+.completion-stem {
+  font-family: 'Fraunces', serif;
+  font-size: 1.35rem;
+  font-style: italic;
+}
+
+.chip {
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.85rem;
+  background: var(--color-paper-deep);
+  border: 1px solid oklch(85% 0.02 85);
+}
+
+.chip small {
+  color: var(--color-ink-soft);
+  margin-left: 0.3rem;
+}
+
+.chip-strong {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+  font-weight: 700;
+}
+
+.chip-faint {
+  opacity: 0.45;
+}
+
+.panel {
+  border-radius: 0.6rem;
+  padding: 1rem 1.3rem;
+  background: var(--color-paper-deep);
+  border: 1px solid oklch(87% 0.02 85);
+  font-size: 0.92rem;
+  box-shadow: 0 1px 2px oklch(0% 0 0 / 0.04);
+}
+
+.panel-yes {
+  border-top: 3px solid var(--color-good);
+}
+
+.panel-no {
+  border-top: 3px solid var(--color-bad);
+}
+
+.punchline-slide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.big-statement {
+  font-family: 'Fraunces', serif;
+  font-size: 1.85rem;
+  line-height: 1.42;
+  max-width: 40rem;
+}
+
+.big-statement em {
+  color: var(--color-accent);
+  font-style: italic;
+}
+
+.big-statement-kicker {
+  font-family: 'Fraunces', serif;
+  font-size: 2.3rem;
+  font-weight: 600;
+  margin-top: 1.6rem;
+}
+
+/* --- Anatomy slide --------------------------------------------------------------------------- */
+
+.anatomy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 1.2rem;
+}
+
+.anatomy-row {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.55rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--color-paper-deep);
+  border-left: 2px solid var(--color-accent-soft);
+  font-size: 0.9rem;
+}
+
+.anatomy-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* --- Exercise & debrief ------------------------------------------------------------------------- */
+
+.exercise-steps {
+  margin-top: 1.3rem;
+  font-size: 1.02rem;
+}
+
+.exercise-steps li {
+  margin-bottom: 0.45rem;
+}
+
+.debrief-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-top: 1.6rem;
+}
+
+/* --- Iterate loop ----------------------------------------------------------------------------------- */
+
+.iterate-loop {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 1.3rem 0 1.5rem;
+}
+
+.loop-step {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  background: var(--color-paper-deep);
+  border: 1px solid oklch(85% 0.02 85);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.loop-accent {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+}
+
+.loop-arrow {
+  color: var(--color-ink-soft);
+  font-size: 1.1rem;
+}
+
+/* --- Recap ---------------------------------------------------------------------------------------------- */
+
+.recap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  margin-top: 1.2rem;
+}
+
+.recap-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--color-paper-deep);
+  border: 1px solid oklch(89% 0.02 85);
+  font-size: 0.9rem;
+  transition: border-color 200ms var(--ease-out-expo), transform 200ms var(--ease-out-expo);
+}
+
+.recap-item:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.recap-wide {
+  grid-column: 1 / -1;
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent-soft);
+}
+
+.recap-num {
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+/* --- Agenda ------------------------------------------------------------------------------------------------- */
+
+.agenda ol {
+  font-size: 1.12rem;
+  line-height: 2.1;
+}
+
+/* --- Motion ---------------------------------------------------------------------------------------------------- */
+
+.slidev-vclick-target {
+  transition: opacity 280ms var(--ease-out-expo), transform 280ms var(--ease-out-expo);
+}
+
+.slidev-vclick-hidden {
+  transform: translateY(6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slidev-vclick-target,
+  .technique-rule::after,
+  .recap-item {
+    transition: none;
+  }
+
+  .slidev-vclick-hidden {
+    transform: none;
+  }
+}
+
+/* --- Reaction GIFs ----------------------------------------------------------------- */
+
+.slide-gif,
+.gif-figure {
+  position: absolute;
+  z-index: 3;
+}
+
+.slide-gif {
+  border-radius: 0.6rem;
+  object-fit: contain;
+  box-shadow: 0 6px 22px oklch(0% 0 0 / 0.16);
+}
+
+.gif-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  left: 35%;
+  bottom: 50%;
+}
+
+.gif-figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.6rem;
+  box-shadow: 0 6px 22px oklch(0% 0 0 / 0.16);
+}
+
+.gif-figure figcaption {
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+/* positions */
+.gif-side {
+  right: 3.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.gif-center {
+  left:50%;
+  transform: translateY(-50%);
+}
+
+.gif-br {
+  right: 3rem;
+  bottom: 3rem;
+}
+
+/* sizes (vh caps keep them inside the viewport) */
+.slide-gif.gif-side { max-height: 42vh; }
+.slide-gif.gif-br { max-height: 26vh; }
+.slide-gif.gif-sm { max-height: 20vh; }
+.gif-figure.gif-side { width: 20rem; max-width: 30%; }
+
+/* keep vertically-centered gifs centered while hidden (fade in, no swoop) */
+.gif-figure.gif-side.slidev-vclick-hidden,
+.slide-gif.gif-side.slidev-vclick-hidden {
+  transform: translateY(-50%);
+}
+
+/* caption reads light on the dark section dividers */
+.slidev-layout.section .gif-figure figcaption {
+  color: var(--color-paper-soft);
+}
