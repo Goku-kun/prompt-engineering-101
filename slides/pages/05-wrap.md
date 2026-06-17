@@ -2,7 +2,7 @@
 class: cheatsheet-slide
 ---
 
-# The whole workshop, one slide
+# Let's review
 
 <div class="recap-grid">
 <div class="recap-item"><span class="recap-num">1</span><span><b>Be specific</b>: length, audience, purpose, constraints</span></div>
